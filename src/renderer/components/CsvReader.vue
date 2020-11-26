@@ -44,19 +44,15 @@ export default {
       }
 
       const reader = new FileReader()
-      reader.readAsText(file)
-
-      reader.onload = () => {
-        const result = reader.result
-        console.log(Encoding.detect(result))
+      reader.onload = e => {
+        const result = new Uint8Array(e.target.result)
+        const encode = Encoding.detect(result)
         const shiftJisCodeList = Encoding.convert(result, {
-          to: 'UTF8',
-          from: 'UNICODE',
+          to: 'unicode',
+          from: encode,
           type: 'string'
         })
-        console.log(shiftJisCodeList.toString())
         const lines = shiftJisCodeList.split('\n')
-        console.log(lines)
         lines.shift()
         const linesArr = []
         if (lines.length === 0) return
@@ -72,8 +68,11 @@ export default {
         }))
 
         vm.header = header
-        vm.data = linesArr
+
+        if (lines.length === 1) return
+        vm.data = linesArr.splice(1)
       }
+      reader.readAsArrayBuffer(file)
     }
   }
 }
