@@ -1,10 +1,14 @@
 <template>
-  <div>
-    <input type="file" @change="loadCsvFile">
+  <v-container>
+    <v-row>
+      <input type="file" @change="loadCsvFile">
+      <v-spacer/>
+      <v-btn color="primary" @click="downloadCSV">
+        csvダウンロード
+      </v-btn>
+    </v-row>
+
     <p>{{ message }}</p>
-    <v-btn @click="downloadCSV">
-      csvダウンロード
-    </v-btn>
     <v-row>
       <v-col cols="10">
         <v-data-table
@@ -19,7 +23,7 @@
         </v-data-table>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>
